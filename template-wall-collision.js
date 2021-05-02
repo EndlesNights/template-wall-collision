@@ -1,8 +1,8 @@
 import { libWrapper } from './shim.js'
-const MODULE_ID = 'wall-collision';
+const MODULE_ID = 'template-wall-collision';
 	
 Hooks.once("init", () => {
-	console.log("Wall Collision Loaded");
+	console.log("Template Wall Collision Loaded");
 });
 
 Hooks.on('renderMeasuredTemplateConfig', (app, html, data) => {
