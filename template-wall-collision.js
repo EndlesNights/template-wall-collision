@@ -12,12 +12,12 @@ Hooks.on('renderMeasuredTemplateConfig', (app, html, data) => {
 	});
 
 	if (app.object.getFlag(MODULE_ID, 'checkWallCollision') === undefined) {
-		app.object.setFlag(MODULE_ID, 'checkWallCollision', false);
+		app.object.setFlag(MODULE_ID, 'checkWallCollision', 'false');
 	}
 	if (app.object.getFlag(MODULE_ID, 'origin') === undefined) {
 		app.object.setFlag(MODULE_ID, 'origin', {x:"",y:""});
 	}	
-	const message = app.object.getFlag(MODULE_ID, 'checkWallCollision') == true ? 
+	const message = app.object.getFlag(MODULE_ID, 'checkWallCollision') == 'true' ? 
 	`<div class="form-group">
 		<label>Enable Collision With Walls?</label>
 		<select name="flags.${MODULE_ID}.checkWallCollision">
@@ -49,6 +49,8 @@ Hooks.on('renderMeasuredTemplateConfig', (app, html, data) => {
 
 	html.find(".form-group").last().after(message);
 	html.find(".form-group").last().after(message2);
+
+	console.log(app.object.data.flags)
 });
 
 function MeasuredTemplateOver(obj) {
@@ -114,7 +116,7 @@ function MeasuredTemplateOver(obj) {
 			
 			
 			if ( !contains ) continue;
-			if( obj.data.flags[`${MODULE_ID}`]?.checkWallCollision == true &&  canvas.walls.checkCollision(rayTest)) {
+			if( obj.data.flags[`${MODULE_ID}`]?.checkWallCollision == 'true' &&  canvas.walls.checkCollision(rayTest)) {
 				contains = false;
 				continue;
 			}
@@ -127,12 +129,12 @@ function MeasuredTemplateOver(obj) {
 
 Hooks.on("getSceneControlButtons", function(controls){
 	controls[1].tools.splice(controls[1].tools.length-1,0,{
-      name: "collision",
-      title: "Toggle template collision with walls.",
-      icon: "fas fa-external-link-square-alt",
-      toggle: true,
-	  active: !!canvas?.templates._setWallCollision,
-	  onClick: toggled => canvas.templates._setWallCollision = toggled
+		name: "collision",
+		title: "Toggle template collision with walls.",
+		icon: "fas fa-external-link-square-alt",
+		toggle: true,
+		active: !!canvas?.templates._setWallCollision,
+		onClick: toggled => canvas.templates._setWallCollision = toggled
   })
   return controls;
 	
@@ -158,7 +160,7 @@ Hooks.on("ready", () => {
 Hooks.on("preCreateMeasuredTemplate", (scene, obj, data) =>{
 	obj[`flags`] = {
 		[`${MODULE_ID}`]: {
-		checkWallCollision: canvas.templates[`_setWallCollision`],
+		checkWallCollision: canvas.templates[`_setWallCollision`].toString(),
 		origin: {x:0,y:0}}
 	};
 });

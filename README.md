@@ -28,6 +28,10 @@ Extract the query.zip file to the public/modules directory. Use the `Manage Modu
 
 ## Change Log
 
+
+**Version 1.0.1**
+- Release File manifest version esmodules was referin to the older namespace.
+
 **Version 1.0.0**
 
 Initial release version.
