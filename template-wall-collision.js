@@ -14,8 +14,11 @@ Hooks.on('renderMeasuredTemplateConfig', (app, html, data) => {
 	if (app.object.getFlag(MODULE_ID, 'checkWallCollision') === undefined) {
 		app.object.setFlag(MODULE_ID, 'checkWallCollision', 'false');
 	}
-	if (app.object.getFlag(MODULE_ID, 'origin') === undefined) {
-		app.object.setFlag(MODULE_ID, 'origin', {x:"",y:""});
+	if (app.object.getFlag(MODULE_ID, 'x') === undefined) {
+		app.object.setFlag(MODULE_ID, 'x', 0 );
+	}
+	if (app.object.getFlag(MODULE_ID, 'y') === undefined) {
+		app.object.setFlag(MODULE_ID, 'y', 0 );
 	}	
 	const message = app.object.getFlag(MODULE_ID, 'checkWallCollision') == 'true' ? 
 	`<div class="form-group">
@@ -36,14 +39,14 @@ Hooks.on('renderMeasuredTemplateConfig', (app, html, data) => {
 	</div>
 	`;
 
-	let originX = app.object.data.flags[`${MODULE_ID}`]?.origin[`x`] || "0";
-	let originY = app.object.data.flags[`${MODULE_ID}`]?.origin[`y`] || "0";
+	let originX = app.object.data.flags[`${MODULE_ID}`]?.x || "0";
+	let originY = app.object.data.flags[`${MODULE_ID}`]?.y || "0";
 
 	const message2 = 
 	`<div class="form-group">
 		<label>Origin Offset:[X,Y]</label>
-		<input style="max-width:50%" type="text" name="flags.${MODULE_ID}.origin.x" value="${originX}" data-dtype="Number"/>
-		<input style="max-width:50%" type="text" name="flags.${MODULE_ID}.origin.y" value="${originY}" data-dtype="Number"/>
+		<input style="max-width:50%" type="text" name="flags.${MODULE_ID}.x" value="${originX}" data-dtype="Number"/>
+		<input style="max-width:50%" type="text" name="flags.${MODULE_ID}.y" value="${originY}" data-dtype="Number"/>
 	</div>
 	`;
 
@@ -68,7 +71,7 @@ function MeasuredTemplateOver(obj) {
 	hl.clear();
 
 	// If we are in gridless mode, highlight the shape directly
-	if ( grid.type === GRID_TYPES.GRIDLESS ) {
+	if ( grid.type === CONST.GRID_TYPES.GRIDLESS ) {
 		const shape = obj.shape.clone();
 		if ( "points" in shape ) {
 			shape.points = shape.points.map((p, i) => {
@@ -102,9 +105,9 @@ function MeasuredTemplateOver(obj) {
 	// Identify grid coordinates covered by the template Graphics
 	// let originX = !!obj.data.flags[`${MODULE_ID}`].origin[`x`] ? obj.data.flags[`${MODULE_ID}`].origin[`x`] : obj.data.x;
 	// let originY = !!obj.data.flags[`${MODULE_ID}`].origin[`y`] ? obj.data.flags[`${MODULE_ID}`].origin[`y`] : obj.data.y;
-	
-	let originX = obj.data.x + obj.data.flags[`${MODULE_ID}`]?.origin[`x`] | obj.data.x;
-	let originY = obj.data.y + obj.data.flags[`${MODULE_ID}`]?.origin[`y`] | obj.data.y;
+
+	let originX = obj.data.x + obj.data.flags[`${MODULE_ID}`]?.x | obj.data.x;
+	let originY = obj.data.y + obj.data.flags[`${MODULE_ID}`]?.y | obj.data.y;
 
 	for (let r = -nr; r < nr; r++) {
 		for (let c = -nc; c < nc; c++) {
@@ -126,14 +129,14 @@ function MeasuredTemplateOver(obj) {
 	}
 }
 
-
 Hooks.on("getSceneControlButtons", function(controls){
+	console.dir(canvas)
 	controls[1].tools.splice(controls[1].tools.length-1,0,{
 		name: "collision",
 		title: "Toggle template collision with walls.",
 		icon: "fas fa-external-link-square-alt",
 		toggle: true,
-		active: !!canvas?.templates._setWallCollision,
+		active: !!canvas?.templates?._setWallCollision,
 		onClick: toggled => canvas.templates._setWallCollision = toggled
   })
   return controls;
@@ -157,10 +160,8 @@ Hooks.on("ready", () => {
 });
 
 
-Hooks.on("preCreateMeasuredTemplate", (scene, obj, data) =>{
-	obj[`flags`] = {
-		[`${MODULE_ID}`]: {
-		checkWallCollision: canvas.templates[`_setWallCollision`].toString(),
-		origin: {x:0,y:0}}
-	};
+Hooks.on("createMeasuredTemplate", (obj) =>{
+	obj.setFlag(MODULE_ID, 'checkWallCollision', canvas.templates[`_setWallCollision`].toString());
+	obj.setFlag(MODULE_ID, 'x', 0);
+	obj.setFlag(MODULE_ID, 'y', 0);
 });
