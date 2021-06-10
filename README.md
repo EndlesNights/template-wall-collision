@@ -1,9 +1,9 @@
-![](https://img.shields.io/badge/Foundry-v0.7.9-informational)
+![](https://img.shields.io/badge/Foundry-v0.8.6-informational)
 # Template Wall Collision
 
 * **Author**: EndlesNights#9000
-* **Version**: 1.0.0
-* **Foundry VTT Compatibility**: 0.7.5 to 0.7.9
+* **Version**: 1.0.2
+* **Foundry VTT Compatibility**: 0.8.5 to 0.8.6
 * **System Compatibility**: Universal
 * **Module Dependencies**: libWrapper https://foundryvtt.com/packages/lib-wrapper/
 
@@ -28,6 +28,11 @@ Extract the query.zip file to the public/modules directory. Use the `Manage Modu
 
 ## Change Log
 
+**Version 1.0.3**
+- Fixxed issue where userID where not being checked.
+
+**Version 1.0.2**
+- Update to Foundry VTT 0.8.6 Stable Release.
 
 **Version 1.0.1**
 - Release File manifest version esmodules was referin to the older namespace.
