@@ -1,9 +1,9 @@
-![](https://img.shields.io/badge/Foundry-v0.8.6-informational)
+![](https://img.shields.io/badge/Foundry-v9-informational)
 # Template Wall Collision
 
 * **Author**: EndlesNights#9000
-* **Version**: 1.0.2
-* **Foundry VTT Compatibility**: 0.8.5 to 0.8.6
+* **Version**: 1.0.4
+* **Foundry VTT Compatibility**: v9
 * **System Compatibility**: Universal
 * **Module Dependencies**: libWrapper https://foundryvtt.com/packages/lib-wrapper/
 
@@ -27,6 +27,9 @@ Extract the query.zip file to the public/modules directory. Use the `Manage Modu
 
 
 ## Change Log
+
+**Version 1.0.4**
+- Updated to Foundry v9
 
 **Version 1.0.3**
 - Fixxed issue where userID where not being checked.
