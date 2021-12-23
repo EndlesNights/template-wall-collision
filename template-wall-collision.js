@@ -86,10 +86,11 @@ function MeasuredTemplateOver(obj) {
 	
 	// Code from highlightGrid(), slight edit to make it more efficent
 	// Get number of rows and columns
-	const nr = grid.type === CONST.GRID_TYPES.SQUARE ? 
-		Math.ceil(((obj.data.distance * 1 ) / d.distance) / (d.size / grid.h)) + 1 : Math.ceil(((obj.data.distance * 1.5 ) / d.distance) / (d.size / grid.h));
-	const nc = grid.type === CONST.GRID_TYPES.SQUARE ? 
-		Math.ceil(((obj.data.distance * 1 ) / d.distance) / (d.size / grid.w)) + 1 :  Math.ceil(((obj.data.distance * 1.5 ) / d.distance) / (d.size / grid.w));
+    const [maxr, maxc] = grid.grid.getGridPositionFromPixels(d.width, d.height);
+    let nr = Math.ceil(((obj.data.distance * 1.5) / d.distance) / (d.size / grid.h));
+    let nc = Math.ceil(((obj.data.distance * 1.5) / d.distance) / (d.size / grid.w));
+    nr = Math.min(nr, maxr);
+    nc = Math.min(nc, maxc);
 	
 	//code from highlightGrid() unedited 
 	// Get the offset of the template origin relative to the top-left grid space
@@ -106,7 +107,6 @@ function MeasuredTemplateOver(obj) {
 
 	let originX = obj.data.x + obj.data.flags[`${MODULE_ID}`]?.x | obj.data.x;
 	let originY = obj.data.y + obj.data.flags[`${MODULE_ID}`]?.y | obj.data.y;
-
 	for (let r = -nr; r < nr; r++) {
 		for (let c = -nc; c < nc; c++) {
 			let [gx, gy] = canvas.grid.grid.getPixelsFromGridPosition(row0 + r, col0 + c);
@@ -140,19 +140,15 @@ Hooks.on("getSceneControlButtons", function(controls){
 	
 })
 
-Hooks.once('setup', function () {
-	libWrapper.register(
-		MODULE_ID,
-		'MeasuredTemplate.prototype.highlightGrid',
-		function() {
-			MeasuredTemplateOver(this);
-			return;
-		},
-		'OVERRIDE',
-	);
-});
 
 Hooks.on("ready", () => {
+
+	libWrapper.register(MODULE_ID, 'MeasuredTemplate.prototype.highlightGrid', 
+	function() {
+		MeasuredTemplateOver(this);
+	},'OVERRIDE' );
+	canvas.draw();
+
 	canvas.templates[`_setWallCollision`] = false;
 });
 
