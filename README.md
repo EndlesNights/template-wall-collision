@@ -1,4 +1,7 @@
 ![](https://img.shields.io/badge/Foundry-v9-informational)
+
+This module is now pepricated, instead try considering using https://github.com/caewok/fvtt-walled-templates
+
 # Template Wall Collision
 
 * **Author**: EndlesNights#9000
